@@ -11,11 +11,13 @@ app = connect()
 
 app.use connect.logger()
 
-for path, descriptor of config.routes
-  app.use path, connect.static(descriptor)
-
 server_host = process.env.SERVER_HOST || config.host || '0.0.0.0'
 server_port = process.env.SERVER_PORT || config.port
+
+server_routes = config.routes || { "/": "." }
+
+for path, descriptor of config.routes
+  app.use path, connect.static(descriptor)
 
 listen = (port)->
 
