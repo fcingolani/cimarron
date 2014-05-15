@@ -1,7 +1,7 @@
 http        = require 'http'
 
 connect     = require 'connect'
-colors      = require 'colors'
+chalk       = require 'chalk'
 portfinder  = require 'portfinder'
 opener      = require 'opener'
 
@@ -31,8 +31,8 @@ listen = (port)->
       interrupt_key = "Ctrl+C"
 
       console.log """
-                  Listening on #{server_url.yellow}
-                  Press #{interrupt_key.red} to stop the server
+                  Listening on #{chalk.yellow server_url}
+                  Press #{chalk.red interrupt_key} to stop the server
                   """
 
       opener server_url
