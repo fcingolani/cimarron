@@ -5,6 +5,7 @@ chalk       = require 'chalk'
 portfinder  = require 'portfinder'
 opener      = require 'opener'
 
+###
 config = require process.cwd() + '/cimarron.json'
 
 app = connect()
@@ -42,3 +43,18 @@ if server_port?
 else
   portfinder.getPort (err, free_port)->
     listen free_port
+###
+
+class Cimarron
+
+  constructor: (config)->
+    if config?
+      @load_config config
+
+    @host = '0.0.0.0'
+    @port = null
+
+
+instance = new Cimarron
+
+module.exports = instance
