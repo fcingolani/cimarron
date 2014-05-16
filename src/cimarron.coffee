@@ -7,7 +7,7 @@ _           = require 'underscore'
 
 defaults =
   host: '0.0.0.0'
-  port: null
+  port: 8000
 
   open_browser:   true
   enable_header:  true
@@ -83,15 +83,15 @@ class Cimarron
       app.use.apply app, middleware 
 
     
-    _find_port @port, (port)=>
+    _find_port @port, (free_port)=>
 
-      _listen app, port, @host, ()=>
+      _listen app, free_port, @host, ()=>
 
         if @enable_header
-          _display_header @host, port
+          _display_header @host, free_port
 
         if @open_browser
-          _open_browser @host, port
+          _open_browser @host, free_port
 
 instance = new Cimarron
 
