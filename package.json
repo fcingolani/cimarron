@@ -1,6 +1,6 @@
 {
   "name": "cimarron",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "homepage": "http://github.com/fcingolani/cimarron",
   "main": "./lib/cimarron.js",
