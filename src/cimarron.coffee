@@ -1,49 +1,60 @@
 http        = require 'http'
 
 connect     = require 'connect'
-chalk       = require 'chalk'
 portfinder  = require 'portfinder'
-opener      = require 'opener'
+_           = require 'underscore'
 
-###
-config = require process.cwd() + '/cimarron.json'
 
-app = connect()
+defaults =
+  host: '0.0.0.0'
+  port: null
 
-app.use connect.logger()
+  open_browser:   true
+  enable_header:  true
+  enable_logging: true
 
-server_host = process.env.SERVER_HOST || config.host || '0.0.0.0'
-server_port = process.env.SERVER_PORT || config.port
+  routes: {'/': '.'}
 
-server_routes = config.routes || { "/": "." }
+  middlewares: []
 
-for path, descriptor of config.routes
-  app.use path, connect.static(descriptor)
+_server_url = (host, port)->
+  if host is '0.0.0.0'
+    host = '127.0.0.1'
 
-listen = (port)->
+  "http://#{host}:#{port}"
 
-  http.createServer app
-    .listen port, server_host, ()->
+_listen = (app, args...)->
+  server = http.createServer app
+  server.listen.apply server, args
 
-      if server_host is '0.0.0.0'
-        server_host = '127.0.0.1'
+_display_header = (host, port)->
+  chalk = require 'chalk'
 
-      server_url = "http://#{server_host}:#{port}"
-      interrupt_key = "Ctrl+C"
+  server_url = _server_url host, port
+  interrupt_key = "Ctrl+C"
 
-      console.log """
+  console.log """
+              
+                  ___ /\\_\\    ___ ___      __     _ __   _ __   ___     ___    
+                 /'___\\/\\ \\ /' __` __`\\  /'__`\\  /\\`'__\\/\\`'__\\/ __`\\ /' _ `\\  
+                /\\ \\__/\\ \\ \\/\\ \\/\\ \\/\\ \\/\\ \\L\\.\\_\\ \\ \\/ \\ \\ \\//\\ \\L\\ \\/\\ \\/\\ \\ 
+                \\ \\____\\\\ \\_\\ \\_\\ \\_\\ \\_\\ \\__/.\\_\\\\ \\_\\  \\ \\_\\\\ \\____/\\ \\_\\ \\_\\
+                 \\/____/ \\/_/\\/_/\\/_/\\/_/\\/__/\\/_/ \\/_/   \\/_/ \\/___/  \\/_/\\/_/
+
+
                   Listening on #{chalk.yellow server_url}
                   Press #{chalk.red interrupt_key} to stop the server
-                  """
 
-      opener server_url
+              """
 
-if server_port?
-  listen server_port
-else
-  portfinder.getPort (err, free_port)->
-    listen free_port
-###
+_open_browser = (host, port)->
+  opener = require 'opener'
+  opener _server_url host, port
+
+_find_port = (port, callback)->
+  portfinder.basePort = port
+  portfinder.getPort (err, free_port)=>
+    callback free_port
 
 class Cimarron
 
@@ -51,9 +62,36 @@ class Cimarron
     if config?
       @load_config config
 
-    @host = '0.0.0.0'
-    @port = null
+    _.defaults this, defaults
 
+  load_config: (config)->
+    _.extend this, config
+
+  start: ()->
+
+    app = connect()
+
+    middlewares = @middlewares
+
+    if @enable_logging
+      middlewares.push [ connect.logger() ]
+
+    for path, descriptor of @routes
+      middlewares.push [path, connect.static(descriptor)]
+
+    for middleware in middlewares
+      app.use.apply app, middleware 
+
+    
+    _find_port @port, (port)=>
+
+      _listen app, port, @host, ()=>
+
+        if @enable_header
+          _display_header @host, port
+
+        if @open_browser
+          _open_browser @host, port
 
 instance = new Cimarron
 

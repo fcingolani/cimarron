@@ -32,9 +32,13 @@ CLI.launch (env)->
     process.chdir(env.configBase)
     
     config = require(env.configPath)
-    console.log(config)
 
     cimarron = require(env.modulePath)
-    console.log(cimarron)
+
+    if config?
+      cimarron.load_config config
+
+    cimarron.start()
+
   else
     console.log('No Cimarronfile found.')
