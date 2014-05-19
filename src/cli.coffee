@@ -28,9 +28,11 @@ CLI.launch (env)->
     console.log('LOCAL PACKAGE.JSON:', env.modulePackage)
     console.log('CLI PACKAGE.JSON', require('../package'))
 
-  config =  if env.configPath then require(env.configPath) else {}
+  config =  if env.configPath? then require env.configPath else {}
 
-  cimarron = require('./cimarron')
+  module_path = env.modulePath or 'cimarron'
+
+  cimarron = require module_path
 
   cimarron.load_config config
 
