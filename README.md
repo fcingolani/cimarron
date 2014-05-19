@@ -1,5 +1,7 @@
-Cimarron
+Cimarron [![NPM version](https://badge.fury.io/js/cimarron.svg)](http://badge.fury.io/js/cimarron)
 ========
+
+
 
 Cimarron is a zero-configuration http server. It's ideal for development and testing.
 
