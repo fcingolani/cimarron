@@ -74,7 +74,7 @@ class Cimarron
     middlewares = @middlewares
 
     if @enable_logging
-      middlewares.push [ connect.logger() ]
+      middlewares.unshift [ connect.logger() ]
 
     for path, descriptor of @routes
       middlewares.push [path, connect.static(descriptor)]
