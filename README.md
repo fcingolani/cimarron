@@ -45,12 +45,14 @@ Create a `Cimarronfile.json` inside the directory you want to serve:
 {
     "host": "0.0.0.0",
     "port": 8000,
-    "open_browser": true,
     "enable_header": true,
     "enable_logging": true,
     "routes": {
       "/": "."
-    }
+    },
+    "browse": [
+        "/"
+    ]
 }
 ````
 
@@ -68,3 +70,13 @@ In case you want to add more routes, just add them to the routes array:
 ````
 
 Remember, it's not required to define every property, forementioned defaults will be used.
+
+Options
+-------
+
+### host
+### port
+### enable_header
+### enable_logging
+### routes
+### browse
