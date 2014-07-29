@@ -1,5 +1,6 @@
 http        = require 'http'
 
+opener      = require 'opener'
 connect     = require 'connect'
 portfinder  = require 'portfinder'
 _           = require 'underscore'
@@ -27,10 +28,9 @@ _listen = (app, args...)->
   server = http.createServer app
   server.listen.apply server, args
 
-_display_header = (host, port)->
+_display_header = (server_url)->
   chalk = require 'chalk'
 
-  server_url = _server_url host, port
   interrupt_key = "Ctrl+C"
 
   console.log """
@@ -46,10 +46,6 @@ _display_header = (host, port)->
                   Press #{chalk.red interrupt_key} to stop the server
 
               """
-
-_open_browser = (host, port)->
-  opener = require 'opener'
-  opener _server_url host, port
 
 _find_port = (port, callback)->
   portfinder.basePort = port
@@ -80,18 +76,23 @@ class Cimarron
       middlewares.push [path, connect.static(descriptor)]
 
     for middleware in middlewares
-      app.use.apply app, middleware 
-
+      app.use.apply app, middleware
     
     _find_port @port, (free_port)=>
 
       _listen app, free_port, @host, ()=>
 
+        server_url = _server_url @host, free_port
+
         if @enable_header
-          _display_header @host, free_port
+          _display_header server_url
 
         if @open_browser
-          _open_browser @host, free_port
+
+          unless @browse?
+            @browse = ['/']
+
+          opener server_url + url for url in @browse
 
 instance = new Cimarron
 
