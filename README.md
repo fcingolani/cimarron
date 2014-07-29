@@ -1,9 +1,6 @@
-Cimarron [![NPM version](https://badge.fury.io/js/cimarron.svg)](http://badge.fury.io/js/cimarron)
-========
-
-
-
 Cimarron is a zero-configuration http server. It's ideal for development and testing.
+
+[![NPM version](https://badge.fury.io/js/cimarron.svg)](http://badge.fury.io/js/cimarron)
 
 
 Installation
@@ -75,8 +72,20 @@ Options
 -------
 
 ### host
+
+Hostname which `cimarron` will listen to. ***Default: 0.0.0.0***.
+
 ### port
+
+Port number which `cimarron` will listen to. In fact, it will search for a free port incrementally until it finds one, starting in the selected port. ***Default: 8000***.
+
 ### enable_header
+
+If false, won't show the `cimarron` banner on start. ***Default: true***.
+
 ### enable_logging
+
+If false, won't log requests to stdout. ***Default: true***.
+
 ### routes
 ### browse
