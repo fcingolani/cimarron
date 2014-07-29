@@ -10,13 +10,14 @@ defaults =
   host: '0.0.0.0'
   port: 8000
 
-  open_browser:   true
   enable_header:  true
   enable_logging: true
 
   routes: {'/': '.'}
 
   middlewares: []
+
+  browse: ['/']
 
 _server_url = (host, port)->
   if host is '0.0.0.0'
@@ -87,12 +88,10 @@ class Cimarron
         if @enable_header
           _display_header server_url
 
-        if @open_browser
-
-          unless @browse?
-            @browse = ['/']
-
-          opener server_url + url for url in @browse
+        if @browse is false
+          @browse = []
+ 
+        opener server_url + url for url in @browse
 
 instance = new Cimarron
 
