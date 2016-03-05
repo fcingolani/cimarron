@@ -88,4 +88,20 @@ If false, won't show the `cimarron` banner on start. ***Default: true***.
 If false, won't log requests to stdout. ***Default: true***.
 
 ### routes
+
+An object to define the *mountpoints* of your application.
+
+For example:
+
+````json
+{
+    "routes": {
+      "/": "./public",
+      "/assets/": "./bower_components"
+    }
+}
+````
+
 ### browse
+
+An array of URLs to open automatically in your browser when `cimarron` starts. It will open each URL in a browser tab!
