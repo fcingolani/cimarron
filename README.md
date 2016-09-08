@@ -15,7 +15,7 @@ You can clone it from Github too:
     git clone https://github.com/fcingolani/cimarron.git
     cd cimarron
     npm install . -g
-    
+
 Usage
 -----
 
@@ -23,7 +23,7 @@ Usage
 
     cd DIRECTORY
     cimarron
-    
+
 Configuration
 -------------
 
@@ -34,7 +34,7 @@ Configuration is done using a `Cimarronfile`, which can be one of two flavours:
 1. Static configuration. Using JSON, YAML, or XML.
 2. Dynamic configuration. Via JavaScript or CoffeeScript.
 
-###Static Configuration
+### Static Configuration
 
 Create a `Cimarronfile.json` inside the directory you want to serve:
 
@@ -105,3 +105,15 @@ For example:
 ### browse
 
 An array of URLs to open automatically in your browser when `cimarron` starts. It will open each URL in a browser tab!
+
+For example:
+
+````json
+{
+    "browse": [
+      "/",
+      "/docs/",
+      "http://phaser.io/examples/"
+    ]
+}
+````
